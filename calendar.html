@@ -329,7 +329,15 @@
 
   <!-- Template custom -->
   <script src="js/script.js"></script>
-
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var path = window.location.pathname;
+        if (path.endsWith('.html')) {
+            var newPath = path.slice(0, -5);
+            window.history.replaceState({}, '', newPath);
+        }
+    });
+</script>
   </div><!-- Body inner end -->
   </body>
 
