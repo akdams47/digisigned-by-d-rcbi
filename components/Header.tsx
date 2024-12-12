@@ -117,8 +117,8 @@ export default function Header() {
             <div className="relative">
               <button
                 className={`font-medium transition-colors rounded-full px-4 py-2 ${
-                  isScrolled ? 'text-gray-600' : 'text-rotary-blue'
-                    ? 'text-gray-600 hover:bg-[#ff7600] hover:text-white'
+                  isScrolled 
+                    ? 'text-gray-600 hover:bg-[#ff7600] hover:text-white' 
                     : 'text-rotary-blue hover:bg-[#ff7600]'
                 }`}
                 onClick={handleMoreClick} 
