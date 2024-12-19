@@ -3,25 +3,144 @@
 @tailwind utilities;
 
 :root {
+  --rotary-blue: #0050a0;
+  --rotary-gold: #f7a81b;
+  --rotary-light-blue: #0077d9;
+  --rotary-dark-blue: #003d71;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #333333;
+
+  /* Moving Hue Colors */
+  --white: #ffffff;  /* Sky Blue */
+  --white: #ffffff; /* Cranberry */
+  --cloud: #b9d9eb0f;     /* Cloud */
+  --white: #ffffff;     /* White */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply text-foreground;
+    background: linear-gradient(45deg, var(--white), var(--white), var(--cloud), var(--white));
+    background-size: 400% 400%;
+    animation: gradientShift 6s ease infinite;
+  }
+}
+/* my-app/styles.css (or equivalent) */
+.bg-cranberry {
+  background-color: #d41367; /* Example hex code for Cranberry */
+}
+.bg-cardinal {
+  background-color: #e02927; /* Example hex code for Cardinal */
+}
+.bg-turquoise {
+  background-color: #00adbb; /* Example hex code for Turquoise */
+}
+.bg-orange {
+  background-color: #ff7600; /* Example hex code for Orange */
+}
+.bg-violet {
+  background-color: #901f93; /* Example hex code for Violet */
+}
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  height: 10px; /* Height of the horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background color of the track */
+  border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4169E1; /* Rotary blue color */
+  border-radius: 10px; /* Rounded corners */
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #27408B; /* Darker rotary blue color on hover */
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f1f1; /* Bottom right corner color */
+}
+
+
+@layer components {
+  .container {
+    @apply px-4 mx-auto max-w-7xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply bg-rotary-blue text-white hover:bg-rotary-light-blue;
+  }
+
+  .btn-secondary {
+    @apply bg-rotary-gold text-rotary-dark-blue hover:bg-opacity-90;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .text-rotary-gold {
+    color: var(--rotary-gold);
+  }
+}
+
+header {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.logo-container {
+  isolation: isolate;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
 }
