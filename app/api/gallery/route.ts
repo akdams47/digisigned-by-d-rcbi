@@ -3,10 +3,9 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-      // Construct the gallery directory path, ensuring it's relative to the project root.
-      const galleryDir = path.join(process.cwd(), 'images', 'gallery');
-      // Check if the directory exists.  If not, return an error.
-      if (!fs.existsSync(galleryDir)) return NextResponse.json({ error: 'Gallery directory not found' }, { status: 404 });  const folders = fs.readdirSync(galleryDir).filter((file) =>
+  const galleryDir = path.join(process.cwd(), 'public', 'images', 'gallery');
+
+  const folders = fs.readdirSync(galleryDir).filter((file) =>
     fs.statSync(path.join(galleryDir, file)).isDirectory()
   ); // Get folders only
 
