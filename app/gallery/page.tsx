@@ -2,28 +2,60 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { X } from "lucide-react"; // Importing the X icon for a modern close button
+import { X } from "lucide-react";
 
 interface GalleryData {
   folderName: string;
   images: string[];
 }
 
+const LoadingSpinner = () => {
+  return (
+    <div className="flex justify-center items-center min-h-[400px]">
+      <div className="relative">
+        {/* Outer ring */}
+        <div className="w-24 h-24 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin"></div>
+        
+        {/* Middle ring */}
+        <div className="absolute top-2 left-2 w-20 h-20 rounded-full border-4 border-blue-100 border-t-blue-400 animate-spin" 
+             style={{ animationDuration: '1.2s' }}>
+        </div>
+        
+        {/* Inner ring */}
+        <div className="absolute top-4 left-4 w-16 h-16 rounded-full border-4 border-blue-100 border-t-blue-300 animate-spin"
+             style={{ animationDuration: '1.4s' }}>
+        </div>
+        
+        {/* Center dot */}
+        <div className="absolute top-[2.75rem] left-[2.75rem] w-6 h-6 bg-blue-500 rounded-full opacity-80 animate-pulse"></div>
+      </div>
+      
+      {/* Loading text with fade effect */}
+      <div className="absolute mt-32 text-blue-500 font-semibold tracking-wider animate-pulse">
+        LOADING
+      </div>
+    </div>
+  );
+};
+
 export default function GalleryPage() {
-  // ... (previous state and effects remain the same)
   const [gallery, setGallery] = useState<GalleryData[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedFolderImages, setSelectedFolderImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchGalleryData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch("/api/gallery");
         const data: GalleryData[] = await response.json();
         setGallery(data);
       } catch (error) {
         console.error("Error fetching gallery data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -72,30 +104,35 @@ export default function GalleryPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8 text-center animate-pulse">Our Gallery</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {gallery.map((folder, folderIndex) => (
-          <div
-            key={folderIndex}
-            className="rounded-lg shadow-lg p-4 cursor-pointer hover:shadow-xl transition-shadow duration-300"
-            onClick={() => openModal(folder.images)}
-          >
-            <h2 className="text-2xl font-semibold text-center mb-4">{folder.folderName}</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {folder.images.slice(0, 4).map((src, imageIndex) => (
-                <div key={imageIndex} className="relative h-48 bg-gray-200 rounded-lg overflow-hidden">
-                  <Image
-                    src={src}
-                    alt={`Image from ${folder.folderName}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-300 hover:scale-110"
-                  />
-                </div>
-              ))}
+      
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {gallery.map((folder, folderIndex) => (
+            <div
+              key={folderIndex}
+              className="rounded-lg shadow-lg p-4 cursor-pointer hover:shadow-xl transition-shadow duration-300"
+              onClick={() => openModal(folder.images)}
+            >
+              <h2 className="text-2xl font-semibold text-center mb-4">{folder.folderName}</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {folder.images.slice(0, 4).map((src, imageIndex) => (
+                  <div key={imageIndex} className="relative h-48 bg-gray-200 rounded-lg overflow-hidden">
+                    <Image
+                      src={src}
+                      alt={`Image from ${folder.folderName}`}
+                      layout="fill"
+                      objectFit="cover"
+                      className="transition-transform duration-300 hover:scale-110"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {isModalOpen && (
         <div
@@ -106,7 +143,6 @@ export default function GalleryPage() {
             className="bg-[#b9d9eb06] inline-block relative rounded-l shadow-xl"
             onClick={handleModalContentClick}
           >
-            {/* Modern close button with hover effects and animation */}
             <button
               onClick={closeModal}
               className="absolute -top-12 right-0 p-2 rounded-full bg-red-500 hover:bg-red-600 transform hover:scale-110 transition-all duration-200 group"

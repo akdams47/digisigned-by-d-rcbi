@@ -13,7 +13,7 @@ export async function GET() {
   const galleryData = folders.map((folder) => {
     const folderPath = path.join(galleryDir, folder);
     const images = fs.readdirSync(folderPath)
-      .filter((file) => file.endsWith('.jpg') || file.endsWith('.png')) // Filter for image files
+      .filter((file) => file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.JPG') || file.endsWith('.PNG')) // Filter for image files
       .map((image) => `/images/gallery/${folder}/${image}`); // Generate the image URL
 
     return { folderName: folder, images };

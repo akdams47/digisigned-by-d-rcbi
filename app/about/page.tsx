@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 export default function AboutPage() {
   return (
-<div className="min-h-screen px-16">
+<div className="min-h-screen px-4">
       <h1 className="text-4xl font-bold mb-8 text-center animate-pulse">About Rotary Club of Bonny Island</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div>
